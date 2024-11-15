@@ -1,0 +1,71 @@
+MongoDB – Aggregation and Indexing:
+Design  and  Develop  MongoDB  Queries using aggregation  and  indexing  with  suitable  example using MongoDB.
+
+
+===========================================///////////////////////////////////===============================================================================
+
+
+
+2.    MongoDB – Aggregation and Indexing:
+Design  and  Develop  MongoDB  Queries using aggregation  and  indexing  with  suitable  example using MongoDB.
+
+  db.createCollection("records");
+{ "ok" : 1 }
+  db.records.insert({rollno:1,name:"sayali",subj:"TOC",marks:78});
+
+
+  db.records.insert({rollno:2,name:"pooja",subj:"TOC",marks:65});
+
+  db.records.insert({rollno:3,name:"prachi",subj:"TOC",marks:80});
+
+  db.records.insert({rollno:4,name:"pallavi",subj:"TOC",marks:70});
+
+  db.records.insert({rollno:5,name:"amruta",subj:"db",marks:67});
+
+  db.records.insert({rollno:6,name:"priti",subj:"ISEE",marks:97});
+
+  db.records.insert({rollno:7,name:"diksha",subj:"oop",marks:59});
+
+  db.records.insert({rollno:8,name:"deepika",subj:"cn",marks:70});
+
+  db.records.insert({rollno:9,name:"genelia",subj:"sepm",marks:84});
+
+  db.records.insert({rollno:10,name:"amaraya",subj:"sepm",marks:77});
+
+
+  db.records.aggregate([{$group:{_id:"$subj",marks:{$min:"$marks"}}}]);
+
+  db.records.aggregate([{$group:{_id:"$subj",marks:{$max:"$marks"}}}]);
+
+  db.records.aggregate([{$group:{_id:"$subj",marks:{$sum:"$marks"}}}]);
+
+  db.records.aggregate([{$group:{_id:"$subj",marks:{$avg:"$marks"}}}]);
+
+  db.records.aggregate([{$group:{_id:"$subj",marks:{$last:"$marks"}}}]);
+
+  db.records.aggregate([{$group:{_id:"$subj",marks:{$first:"$marks"}}}]);
+
+db.records.find().min({rollno:3});
+
+db.records.find().max({rollno:2});
+
+
+
+db.phonebook.insert({"srno":1, "name":"Badgujar Khushi", "contactno":"9762646822"});
+
+db.phonebook.insert({"srno":2,"name":"Agarwal Sakshi", "contactno":"9762646823"});
+
+db.phonebook.insert({"srno":3,"name":"Gaikar Kalyani", "contactno":"9762646824"});
+
+db.phonebook.insert({"srno":4,"name":"Chivade Rohini", "contactno":"9762646825"});
+
+db.phonebook.find().pretty();
+
+//Indexed according to srno in ascending order, -1 means descending order.
+
+db.phonebook.ensureIndex({"srno":1});
+
+db.phonebook.getIndexes();
+
+
+

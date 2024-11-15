@@ -1,0 +1,129 @@
+3 .. Design at least 10 SQL queries for suitable database application using SQL DML statements: all types of Join, Sub-Query and View.
+
+
+
+-- 1. Creating Tables
+CREATE TABLE Students (
+    student_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50),
+    last_name VARCHAR2(50),
+    major VARCHAR2(50),
+    preferred_course_id NUMBER,
+    FOREIGN KEY (preferred_course_id) REFERENCES Courses(course_id)
+);
+
+CREATE TABLE Courses (
+    course_id NUMBER PRIMARY KEY,
+    course_name VARCHAR2(100),
+    credits NUMBER
+);
+
+
+-- 2. Inserting Data into Tables
+-- Insert data into Courses
+INSERT INTO Courses (course_id, course_name, credits) VALUES (101, 'Database Systems', 3);
+INSERT INTO Courses (course_id, course_name, credits) VALUES (102, 'Operating Systems', 4);
+INSERT INTO Courses (course_id, course_name, credits) VALUES (103, 'Data Structures', 3);
+INSERT INTO Courses (course_id, course_name, credits) VALUES (104, 'Algorithms', 4);
+
+-- Insert data into Students with preferred courses
+INSERT INTO Students (student_id, first_name, last_name, major, preferred_course_id)
+VALUES (1, 'Alice', 'Johnson', 'Computer Science', 101);
+INSERT INTO Students (student_id, first_name, last_name, major, preferred_course_id)
+VALUES (2, 'Bob', 'Smith', 'Data Science', 102);
+INSERT INTO Students (student_id, first_name, last_name, major, preferred_course_id)
+VALUES (3, 'Carol', 'Taylor', 'Information Technology', NULL);
+INSERT INTO Students (student_id, first_name, last_name, major, preferred_course_id)
+VALUES (4, 'David', 'Brown', 'Engineering', 104);
+
+-- Commit the inserted data
+COMMIT;
+
+
+
+
+
+
+-- 3. Queries Using Joins, Sub-queries, and Views
+
+
+
+
+
+
+
+
+-- Query 1: INNER JOIN - List of Students with Their Preferred Courses
+SELECT s.first_name, s.last_name, c.course_name
+FROM Students s
+INNER JOIN Courses c ON s.preferred_course_id = c.course_id;
+
+
+
+
+
+
+-- Query 2: LEFT JOIN - All Students and Their Preferred Courses, Including Those Without a Preference
+SELECT s.first_name, s.last_name, c.course_name
+FROM Students s
+LEFT JOIN Courses c ON s.preferred_course_id = c.course_id;
+
+-- Query 3: RIGHT JOIN - All Courses and the Students Who Prefer Them, Including Courses Without Preferences
+SELECT s.first_name, s.last_name, c.course_name
+FROM Students s
+RIGHT JOIN Courses c ON s.preferred_course_id = c.course_id;
+
+-- Query 4: FULL OUTER JOIN - All Students and Courses, Showing Preferences if Available
+SELECT s.first_name, s.last_name, c.course_name
+FROM Students s
+FULL OUTER JOIN Courses c ON s.preferred_course_id = c.course_id;
+
+-- Query 5: Sub-query with IN Operator - Find All Students Who Prefer the "Database Systems" Course
+SELECT first_name, last_name
+FROM Students
+WHERE preferred_course_id IN (SELECT course_id FROM Courses WHERE course_name = 'Database Systems');
+
+
+
+
+
+-- Query 6: Sub-query with EXISTS Operator - Find Students Who Have a Preferred Course
+SELECT first_name, last_name
+FROM Students s
+WHERE EXISTS (
+    SELECT 1
+    FROM Courses c
+    WHERE c.course_id = s.preferred_course_id
+);
+
+
+
+
+-- Query 7: Sub-query with Aggregate Function - Count of Students for Each Course Preference
+SELECT course_name, (
+    SELECT COUNT(*)
+    FROM Students s
+    WHERE s.preferred_course_id = c.course_id
+) AS student_count
+FROM Courses c;
+
+
+
+
+-- Query 8: View Creation - Create a View for Students and Their Course Preferences
+CREATE VIEW Student_Preference_View AS
+SELECT s.student_id, s.first_name, s.last_name, s.major, c.course_name AS preferred_course
+FROM Students s
+LEFT JOIN Courses c ON s.preferred_course_id = c.course_id;
+
+-- Query 9: Query on View - Retrieve All Data from the Student Preference View
+SELECT * FROM Student_Preference_View;
+
+-- Query 10: Correlated Sub-query - Find Students Who Prefer Courses with Above-Average Credits
+SELECT first_name, last_name
+FROM Students s
+WHERE preferred_course_id IN (
+    SELECT course_id
+    FROM Courses
+    WHERE credits > (SELECT AVG(credits) FROM Courses)
+);

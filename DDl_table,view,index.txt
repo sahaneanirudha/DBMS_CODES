@@ -1,0 +1,42 @@
+.    Design and Develop SQL DDL statements which demonstrate the use of SQL objects such as Table, View, Index.
+
+
+
+-- 1. Create a Table
+CREATE TABLE employees (
+    emp_id NUMBER(5) PRIMARY KEY,
+    emp_name VARCHAR2(50),
+    emp_salary NUMBER(10, 2),
+    emp_dept VARCHAR2(30)
+);
+
+-- 2. Insert Sample Data
+INSERT INTO employees VALUES (101, 'John Doe', 50000, 'HR');
+INSERT INTO employees VALUES (102, 'Jane Smith', 60000, 'Finance');
+INSERT INTO employees VALUES (103, 'Emily Davis', 75000, 'IT');
+INSERT INTO employees VALUES (104, 'Michael Brown', 80000, 'IT');
+INSERT INTO employees VALUES (105, 'Sarah Wilson', 45000, 'HR');
+
+-- 3. Create a View
+CREATE VIEW high_earning_employees AS
+SELECT emp_id, emp_name, emp_salary, emp_dept
+FROM employees
+WHERE emp_salary > 60000;
+
+-- 4. Create an Index
+CREATE INDEX idx_emp_dept ON employees (emp_dept);
+
+-- 5. Query the Table
+SELECT * FROM employees;
+
+-- 6. Query the View
+SELECT * FROM high_earning_employees;
+
+-- 7. Drop the Index
+DROP INDEX idx_emp_dept;
+
+-- 8. Drop the View
+DROP VIEW high_earning_employees;
+
+-- 9. Drop the Table
+DROP TABLE employees;

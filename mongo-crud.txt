@@ -1,0 +1,39 @@
+8.    MongoDB Queries:
+Designa nd Develop MongoDB Queries using CRUD operations.(Use CRUD operations)
+
+
+====================================================================================================================================================================================
+
+// CRUD Operations Combined Example
+
+// 1. CREATE: Insert new student records into the 'students' collection
+db.students.insertMany([
+    { name: "Alice", age: 21, major: "Computer Science", grades: [85, 90, 88] },
+    { name: "Bob", age: 23, major: "Mathematics", grades: [78, 82, 85] },
+    { name: "Charlie", age: 22, major: "Physics", grades: [89, 92, 84] },
+    { name: "Diana", age: 24, major: "Biology", grades: [91, 89, 93] }
+]);
+
+// 2. READ: Query to find students older than 21 and retrieve only their names and majors
+db.students.find(
+    { age: { $gt: 21 } },
+    { name: 1, major: 1, _id: 0 }
+);
+
+// 3. UPDATE: Update Diana's grades and add a new 'status' field indicating enrollment
+db.students.updateOne(
+    { name: "Diana" },
+    { 
+        $set: { grades: [92, 94, 95], status: "enrolled" },
+        $currentDate: { updatedAt: true }  // Track the update timestamp
+    }
+);
+
+// Increment the age of all students by 1
+db.students.updateMany(
+    {},
+    { $inc: { age: 1 } }
+);
+
+// 4. DELETE: Remove students with an age greater than 23
+db.students.deleteMany({ age: { $gt: 23 } });
